@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 
-const LoginForm = () => {
+const LoginForm = ({redirect}:{redirect?:string}) => {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
   const getFieldError = (fieldName: string) => {
@@ -17,6 +17,22 @@ const LoginForm = () => {
       return null;
     }
   };
+
+  if(state?.email){
+    if(redirect){
+      window.location.href = redirect;
+    }else{
+      if(state.role === "PATIENT"){
+        window.location.href = "/dashboard";
+      }else if(state.role === "DOCTOR"){
+        window.location.href = "/doctor/dashboard";
+      }else if(state.role === "ADMIN"){
+        window.location.href = "/admin/dashboard";
+      }
+    }
+  }
+  console.log(state)
+
   return (
     <form action={formAction}>
       <FieldGroup>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
+import { cookies } from "next/headers";
 import z from "zod";
 
 const loginValidationZodSchema = z.object({
@@ -42,10 +43,27 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
                 "Content-Type": "application/json",
             },
             cache: "no-store",
-        }).then(res => res.json());
+        })
 
+        const result = await res.json();
 
-        return res;
+        if(!result.data.token.accessToken || !result.data.token.refreshToken){
+            return { error: "Login failed" };
+        }
+
+        const cookiesStorage = await cookies();
+        cookiesStorage.set("accessToken", result.data.token.accessToken, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 24 * 60 * 60 * 1000
+        });
+        cookiesStorage.set("refreshToken", result.data.token.refreshToken,{
+            httpOnly: true,
+            secure: true,
+            maxAge:  30 * 24 * 60 * 60 * 1000 
+        });
+
+        return result.data.user;
 
     } catch (error) {
         console.log(error);
