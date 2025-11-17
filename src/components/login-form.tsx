@@ -5,33 +5,37 @@ import { useActionState } from "react";
 import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
+import toast from "react-hot-toast";
+import Link from "next/link";
 
 const LoginForm = ({redirect}:{redirect?:string}) => {
   const [state, formAction, isPending] = useActionState(loginUser, null);
 
-  const getFieldError = (fieldName: string) => {
-    if (state && state.errors) {
-      const error = state.errors.find((err: any) => err.field === fieldName);
-      return error.message;
-    } else {
-      return null;
-    }
-  };
+const getFieldError = (fieldName: string) => {
+  if (state?.errors) {
+    const error = state.errors.find((err: any) => err.field === fieldName);
+    return error?.message ?? null;  
+  }
+  return null;
+};
 
-  if(state?.email){
+
+  if(!isPending && state?.success){
+    toast.success("Login successful");
     if(redirect){
       window.location.href = redirect;
     }else{
-      if(state.role === "PATIENT"){
+      if(state.data.user.role === "PATIENT"){
         window.location.href = "/dashboard";
-      }else if(state.role === "DOCTOR"){
+      }else if(state.data.user.role === "DOCTOR"){
         window.location.href = "/doctor/dashboard";
-      }else if(state.role === "ADMIN"){
+      }else if(state.data.user.role === "ADMIN"){
         window.location.href = "/admin/dashboard";
       }
     }
+  }else if(!isPending && state?.message){
+    toast.error(state?.message);
   }
-  console.log(state)
 
   return (
     <form action={formAction}>
@@ -74,23 +78,23 @@ const LoginForm = ({redirect}:{redirect?:string}) => {
         </div>
         <FieldGroup className="mt-4">
           <Field>
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending} className="cursor-pointer">
               {isPending ? "Logging in..." : "Login"}
             </Button>
 
             <FieldDescription className="px-6 text-center">
               Don&apos;t have an account?{" "}
-              <a href="/register" className="text-blue-600 hover:underline">
+              <Link href="/register" className="text-blue-600 hover:underline font-semibold">
                 Sign up
-              </a>
+              </Link>
             </FieldDescription>
             <FieldDescription className="px-6 text-center">
-              <a
+              <Link
                 href="/forget-password"
-                className="text-blue-600 hover:underline"
+                className="text-blue-600 hover:underline font-semibold"
               >
                 Forgot password?
-              </a>
+              </Link>
             </FieldDescription>
           </Field>
         </FieldGroup>

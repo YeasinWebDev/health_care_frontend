@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import  Jwt  from "jsonwebtoken";
 import { getDefaultDashboardRoute, getRouteOwner, isAuthRoute, UserRole } from "./utility/auth";
+import { removeCookie } from "./services/auth/tokenHandler";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
-    const cookies = request.cookies;
 
     const accessToken = request.cookies.get("accessToken")?.value;
 
@@ -17,7 +17,8 @@ export function proxy(request: NextRequest) {
             userRole = decodedToken.role as UserRole;
         } catch (error) {
             console.log(error);
-            cookies.delete("accessToken");
+            await removeCookie("accessToken");
+            await removeCookie("refreshToken");
             return NextResponse.redirect(new URL("/login", request.url));
         }
     }

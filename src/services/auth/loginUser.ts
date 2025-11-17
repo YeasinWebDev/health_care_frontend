@@ -1,18 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
-import { cookies } from "next/headers";
 import z from "zod";
+import { setCookie } from "./tokenHandler";
 
 const loginValidationZodSchema = z.object({
-    email: z.email({
-        message: "Email is required",
-    }),
-    password: z.string("Password is required").min(6, {
-        error: "Password is required and must be at least 6 characters long",
-    }).max(100, {
-        error: "Password must be at most 100 characters long",
-    }),
+    email: z.string().email("Email is required"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
 export const loginUser = async (_currentState: any, formData: any): Promise<any> => {
@@ -47,26 +41,26 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
 
         const result = await res.json();
 
-        if(!result.data.token.accessToken || !result.data.token.refreshToken){
-            return { error: "Login failed" };
-        }
+       if(result.success){
 
-        const cookiesStorage = await cookies();
-        cookiesStorage.set("accessToken", result.data.token.accessToken, {
+       await setCookie("accessToken", result.data.token.accessToken, {
             httpOnly: true,
             secure: true,
-            maxAge: 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60 * 1000,
+            sameSite:"none"
         });
-        cookiesStorage.set("refreshToken", result.data.token.refreshToken,{
+       await setCookie("refreshToken", result.data.token.refreshToken,{
             httpOnly: true,
             secure: true,
-            maxAge:  30 * 24 * 60 * 60 * 1000 
+            maxAge:  30 * 24 * 60 * 60 * 1000 ,
+            sameSite:"none"
         });
+       }
 
-        return result.data.user;
+        return result;
 
     } catch (error) {
         console.log(error);
-        return { error: "Login failed" };
+        return { error };
     }
 }
