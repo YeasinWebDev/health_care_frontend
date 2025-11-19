@@ -3,6 +3,7 @@
 
 import z from "zod";
 import { setCookie } from "./tokenHandler";
+import { zodValidator } from "@/lib/zodValidator";
 
 const loginValidationZodSchema = z.object({
     email: z.string().email("Email is required"),
@@ -16,23 +17,15 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
             password: formData.get('password'),
         }
 
-        const validatedFields = loginValidationZodSchema.safeParse(loginData);
-
-        if (!validatedFields.success) {
-            return {
-                success: false,
-                errors: validatedFields.error.issues.map(issue => {
-                    return {
-                        field: issue.path[0],
-                        message: issue.message,
-                    }
-                })
-            }
+        if(zodValidator(loginData, loginValidationZodSchema).success === false){
+            return zodValidator(loginData, loginValidationZodSchema);
         }
+
+        const validatedFields = zodValidator(loginData, loginValidationZodSchema).data;
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
             method: "POST",
-            body: JSON.stringify(loginData),
+            body: JSON.stringify(validatedFields),
             headers: {
                 "Content-Type": "application/json",
             },
