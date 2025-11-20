@@ -28,7 +28,6 @@ function DashboardNavbarContent(userInfo: { userInfo: IUser | undefined }) {
     };
   }, []);
 
-  console.log(userInfo.userInfo)
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
       <div className="flex h-16 items-center justify-between gap-4 px-4 md:px-6">

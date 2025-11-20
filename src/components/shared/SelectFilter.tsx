@@ -40,7 +40,7 @@ function SelectFilter({ paramName, placeholder, options }: SelectFilterProps) {
       <SelectContent>
         <SelectItem value="All">All</SelectItem>
         {options.map((option) => (
-          <SelectItem key={option.value} value={option.value}>
+          <SelectItem key={option.value} value={option.value} className="capitalize">
             {option.label}
           </SelectItem>
         ))}

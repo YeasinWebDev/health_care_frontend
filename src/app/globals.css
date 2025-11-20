@@ -120,3 +120,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Custom horizontal scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px; /* Horizontal scrollbar height */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb; /* gray-200 */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3b82f6; /* blue-500 */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2563eb; /* blue-600 */
+}

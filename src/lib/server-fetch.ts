@@ -7,7 +7,7 @@ const serverFetchHelper = async (endpoint: string, options: RequestInit): Promis
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
     headers: {
       ...headers,
-      Cookie: accessToken ? `accessToken=${accessToken}` : "",
+      Cookie: accessToken ? `accessToken=${accessToken?.value}` : "",
     },
     ...rest,
   });

@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { Button } from "../ui/button";
@@ -23,13 +25,14 @@ function TablePagination({ currentPage, totalPages }: TablePaginationProps) {
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex items-center justify-center gap-2 flex-col">
+      <div className="flex items-center justify-center gap-2 flex-col md:flex-row">
       <Button variant="outline" size="sm" onClick={() => navigateToPage(currentPage - 1)} disabled={currentPage <= 1 || isPending}>
         <ChevronLeft className="h-4 w-4 mr-1" />
         Previous
       </Button>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex  gap-1">
         {Array.from({ length: Math.min(5, totalPages) }, (_, index) => {
           let pageNumber;
           if (totalPages <= 5) {
@@ -61,7 +64,8 @@ function TablePagination({ currentPage, totalPages }: TablePaginationProps) {
         Next
         <ChevronRight className="h-4 w-4 ml-1" />
       </Button>
-
+      </div>
+    
       <span className="text-sm text-muted-foreground ml-2">
         {/* Page 9 of 20 */}
         Page {currentPage} of {totalPages}
