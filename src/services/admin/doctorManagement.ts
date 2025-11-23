@@ -33,7 +33,7 @@ export async function createDoctor(_prevState: any, formData: FormData) {
         }
 
         const newFormData = new FormData()
-        newFormData.append("data", JSON.stringify(payload))
+        newFormData.append("data", JSON.stringify(validatedPayload))
 
         if (formData.get("file")) {
             newFormData.append("file", formData.get("file") as Blob)

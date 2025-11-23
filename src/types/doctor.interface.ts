@@ -17,5 +17,10 @@ export interface IDoctor {
     avgRating?: number;
     createdAt?: string;
     updatedAt?: string;
-    specialties?: string[];
+    doctorSpecialties?:{
+        specialities:{
+            id: string;
+            title: string;
+        }
+    }[]
 }
