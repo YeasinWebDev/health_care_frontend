@@ -1,9 +1,9 @@
 "use server";
 
+import { UserInfo } from "@/types/user.interface";
 import { getCookie } from "./tokenHandler";
-import { IUser } from "@/types/dashboard.interface";
 
-export const getUser = async (): Promise<IUser | undefined> => {
+export const getUser = async (): Promise<UserInfo | undefined> => {
   try {
     const accessToken = await getCookie("accessToken");
     if (!accessToken) {
@@ -15,6 +15,7 @@ export const getUser = async (): Promise<IUser | undefined> => {
       headers: {
         authorization: `${accessToken?.value}`,
       },
+      cache:"force-cache",
       next:{
         tags:["user"]
       }
@@ -22,12 +23,7 @@ export const getUser = async (): Promise<IUser | undefined> => {
 
     const data = await user.json();
 
-    const userData = {
-      email: data.data.email,
-      role: data.data.role,
-      name: data.data.roleData.name,
-    };
-    return userData;
+    return data?.data;
   } catch (error) {
     console.log(error);
   }

@@ -1,13 +1,18 @@
+import { getNewAccessToken } from "@/services/auth/auth.service";
 import { getCookie } from "@/services/auth/tokenHandler";
 
 const serverFetchHelper = async (endpoint: string, options: RequestInit): Promise<Response> => {
   const { headers, ...rest } = options;
   const accessToken = await getCookie("accessToken");
 
+  if(endpoint !== "/auth/refresh-token"){
+    await getNewAccessToken()
+  }
+
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
     headers: {
-      ...headers,
       Cookie: accessToken ? `accessToken=${accessToken?.value}` : "",
+      ...headers,
     },
     ...rest,
   });

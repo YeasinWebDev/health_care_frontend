@@ -36,7 +36,7 @@ export const doctorNavItems: NavSection[] = [
       },
       {
         title: "My Schedules",
-        href: `/doctor/dashboard/schedules`,
+        href: `/doctor/dashboard/my-schedules`,
         icon: "Clock",
         roles: ["DOCTOR"],
       },
