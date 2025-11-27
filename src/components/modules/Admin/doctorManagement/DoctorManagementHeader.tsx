@@ -17,6 +17,11 @@ const DoctorsManagementHeader = ({
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [dialogKey, setDialogKey] = useState(0);
+     const handleOpenDialog = () => {
+    setDialogKey((prev) => prev + 1); // Force remount
+    setIsDialogOpen(true);
+  };
 
   const handleSuccess = () => {
     startTransition(() => {
@@ -26,6 +31,7 @@ const DoctorsManagementHeader = ({
   return (
     <>
       <DoctorFormDialog
+        key={dialogKey}
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onSuccess={handleSuccess}
@@ -38,7 +44,7 @@ const DoctorsManagementHeader = ({
         action={{
           label: "Add Doctor    ",
           icon: Plus,
-          onClick: () => setIsDialogOpen(true),
+          onClick: handleOpenDialog,
         }}
       />
     </>

@@ -15,6 +15,10 @@ const LoginForm = ({redirect}:{redirect?:string}) => {
 
   if(!isPending && state?.success){
     toast.success("Login successful");
+    if(state.data.user.needPasswordChange){
+      window.location.href = "/reset-password";
+      return
+    }
     if(redirect){
       window.location.href = redirect;
     }else{
@@ -29,6 +33,8 @@ const LoginForm = ({redirect}:{redirect?:string}) => {
   }else if(!isPending && state?.message){
     toast.error(state?.message);
   }
+
+  console.log(state?.data?.user)
 
   return (
     <form action={formAction}>

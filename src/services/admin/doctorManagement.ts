@@ -7,6 +7,17 @@ import { createDoctorZodSchema, updateDoctorZodSchema } from "@/zod/doctors.vali
 
 export async function createDoctor(_prevState: any, formData: FormData) {
     try {
+
+        const specialtiesString = formData?.get("specialties") as string;
+        let specialties: string[] = [];
+        if (specialtiesString) {
+        try {
+            specialties = JSON.parse(specialtiesString);
+            if (!Array.isArray(specialties)) specialties = [];
+        } catch {
+            specialties = [];
+        }
+        }
         const payload: IDoctor = {
             name: formData.get("name") as string,
             email: formData.get("email") as string,
@@ -21,6 +32,7 @@ export async function createDoctor(_prevState: any, formData: FormData) {
             currentWorkPlace: formData.get("currentWorkPlace") as string,
             designation: formData.get("designation") as string,
             password: formData.get("password") as string,
+            specialties: specialties
         }
         if (zodValidator(payload, createDoctorZodSchema).success === false) {
             return zodValidator(payload, createDoctorZodSchema);
@@ -86,6 +98,17 @@ export async function getDoctorById(id: string) {
 
 
 export async function updateDoctor(id: string, _prevState: any, formData: FormData) {
+
+    const specialtiesString = formData?.get("specialties") as string;
+        let specialties: string[] = [];
+        if (specialtiesString) {
+        try {
+            specialties = JSON.parse(specialtiesString);
+            if (!Array.isArray(specialties)) specialties = [];
+        } catch {
+            specialties = [];
+        }
+        }
     try {
         const payload: Partial<IDoctor> = {
             name: formData.get("name") as string,
@@ -98,7 +121,8 @@ export async function updateDoctor(id: string, _prevState: any, formData: FormDa
             qualification: formData.get("qualification") as string,
             currentWorkPlace: formData.get("currentWorkPlace") as string,
             designation: formData.get("designation") as string,
-            // specialties: formData.get("specialities") as string,
+            specialties: specialties
+            
         }
         const validatedPayload = zodValidator(payload, updateDoctorZodSchema).data;
 

@@ -16,7 +16,7 @@ function SearchFilter({ placeholder = "Search...", paramName = "searchTerm" }: S
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [value, setValue] = useState(searchParams.get(paramName) || "");
-  const debouncedValue = useDebounce(value, 500);
+  const debouncedValue = useDebounce(value, 1000);
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
     const initialValue = searchParams.get(paramName) || "";

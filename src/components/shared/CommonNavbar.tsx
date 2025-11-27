@@ -8,7 +8,7 @@ import LogoutBtn from "./LogoutBtn";
 async function CommonNavbar() {
   const accessToken = await getCookie("accessToken");
   const navItems = [
-    { href: "#", label: "Consultation" },
+    { href: "/consultation", label: "Consultation" },
     { href: "#", label: "Health Plans" },
     { href: "#", label: "Medicine" },
     { href: "#", label: "Diagnostics" },
