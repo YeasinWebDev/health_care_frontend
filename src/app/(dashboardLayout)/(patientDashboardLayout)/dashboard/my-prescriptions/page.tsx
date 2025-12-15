@@ -1,6 +1,7 @@
 import PatientPrescriptionsList from "@/components/modules/Patient/PatientPrescription/PatientPrescriptionList";
 import { getMyPrescriptions } from "@/services/patient/prescription.service";
 import { IPrescription } from "@/types/prescription.interface";
+import { Suspense } from "react";
 
 export default async function MyPrescriptionsPage() {
   const response = await getMyPrescriptions();
@@ -15,7 +16,9 @@ export default async function MyPrescriptionsPage() {
         </p>
       </div>
 
+      <Suspense fallback={<div>Loading prescriptions...</div>}>
       <PatientPrescriptionsList prescriptions={prescriptions} />
+      </Suspense>
     </div>
   );
 }
