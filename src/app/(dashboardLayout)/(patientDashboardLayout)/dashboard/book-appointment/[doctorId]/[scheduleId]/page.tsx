@@ -5,6 +5,8 @@ import { IDoctor } from "@/types/doctor.interface";
 import { ISchedule } from "@/types/schedule.interface";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 interface BookAppointmentPageProps {
   params: Promise<{
     doctorId: string;

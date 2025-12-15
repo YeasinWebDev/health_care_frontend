@@ -9,6 +9,8 @@ import { queryStringFormatter } from "@/lib/formatters";
 import { getAdmins } from "@/services/admin/adminManagement";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 async function AdminsManagementPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const searchParamsObj = await searchParams;
   const querystring = queryStringFormatter(searchParamsObj);

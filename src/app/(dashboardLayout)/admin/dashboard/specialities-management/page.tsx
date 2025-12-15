@@ -5,6 +5,8 @@ import { TableSkeleton } from "@/components/shared/TableSkeleton";
 import { getSpecialities } from "@/services/admin/specialitiesManagement";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 async function SpecialitiesManagementPage() {
   const result = await getSpecialities();
   return (

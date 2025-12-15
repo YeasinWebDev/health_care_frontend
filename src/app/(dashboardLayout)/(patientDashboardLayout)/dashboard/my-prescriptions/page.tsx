@@ -3,6 +3,8 @@ import { getMyPrescriptions } from "@/services/patient/prescription.service";
 import { IPrescription } from "@/types/prescription.interface";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default async function MyPrescriptionsPage() {
   const response = await getMyPrescriptions();
   const prescriptions: IPrescription[] = response?.data?.data || [];

@@ -9,6 +9,8 @@ import { queryStringFormatter } from "@/lib/formatters";
 import { getAllPatients } from "@/services/admin/patientMangement";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 async function AdminPatientsManagementPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const searchParamsObj = await searchParams;
   const querystring = queryStringFormatter(searchParamsObj);

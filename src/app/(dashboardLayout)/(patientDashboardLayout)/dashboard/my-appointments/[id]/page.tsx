@@ -3,6 +3,8 @@ import { getAppointmentById } from "@/services/patient/appointment.service";
 import { IAppointment } from "@/types/appointments.interface";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic';
+
 interface AppointmentDetailPageProps {
   params: Promise<{
     id: string;

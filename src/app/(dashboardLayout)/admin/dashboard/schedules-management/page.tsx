@@ -7,6 +7,8 @@ import { queryStringFormatter } from "@/lib/formatters";
 import { getSchedules } from "@/services/admin/scheduleManagement";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 const AdminSchedulesManagementPage = async ({
   searchParams,
 }: {

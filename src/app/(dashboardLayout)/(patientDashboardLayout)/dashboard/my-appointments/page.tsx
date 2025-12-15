@@ -2,6 +2,8 @@ import AppointmentsList from "@/components/modules/Patient/PatientAppointment/Ap
 import { getMyAppointments } from "@/services/patient/appointment.service";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 async function MyAppointments() {
   const appointments = await getMyAppointments();
 

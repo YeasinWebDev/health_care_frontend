@@ -8,6 +8,9 @@ import { getAvailableSchedules, getDoctorOwnSchedules } from "@/services/doctor/
 
 import { Suspense } from "react";
 
+
+export const dynamic = 'force-dynamic';
+
 interface DoctorMySchedulesPageProps {
   searchParams: Promise<{
     page?: string;

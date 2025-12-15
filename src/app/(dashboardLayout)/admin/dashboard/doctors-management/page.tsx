@@ -11,6 +11,8 @@ import { getDoctors } from "@/services/admin/doctorManagement";
 import { getSpecialities } from "@/services/admin/specialitiesManagement";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 async function AdminDoctorsManagementPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   
   const searchParamsObj  = await searchParams;
