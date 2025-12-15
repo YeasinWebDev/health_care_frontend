@@ -28,6 +28,8 @@ const ConsultationPage = async ({
   const doctors = doctorsResponse?.data?.data || [];
   const specialties = specialtiesResponse?.data || [];
 
+  console.log(doctors)
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="space-y-6">

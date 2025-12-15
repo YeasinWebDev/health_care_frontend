@@ -8,7 +8,6 @@ import { Badge } from "../../ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
-import { Bell } from "lucide-react";
 import { getIconComponentByIconName } from "@/lib/iconMapper";
 
 interface DashboardSidebarContentProps {

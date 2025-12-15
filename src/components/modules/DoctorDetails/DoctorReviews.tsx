@@ -82,7 +82,7 @@ export default function DoctorReviews({ doctorId }: DoctorReviewsProps) {
       </Card>
     );
   }
-console.log(reviews)
+   
   return (
     <Card>
       <CardHeader>

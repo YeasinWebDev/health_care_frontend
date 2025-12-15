@@ -15,6 +15,7 @@ export interface Column<T> {
   header: string;
   accessor: keyof T | ((row: T) => React.ReactNode);
   className?: string;
+  sortKey?: boolean;
 }
 
 interface ManagementTableProps<T> {
