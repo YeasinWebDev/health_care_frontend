@@ -14,7 +14,7 @@ export interface IDoctor {
     qualification: string;
     currentWorkPlace: string;
     designation: string;
-    profilePhoto?: File;
+    profilePhoto?:string | undefined;
     specialties?: string[]
     isDeleted?: boolean;
     avgRating?: number;

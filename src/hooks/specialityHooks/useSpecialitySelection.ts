@@ -1,3 +1,5 @@
+"use client"
+
 import { IDoctor } from "@/types/doctor.interface";
 import { ISpecialty } from "@/types/specialities.interface";
 import { useEffect, useState } from "react";

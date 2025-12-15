@@ -11,7 +11,8 @@ export interface IPrescription {
     patientId: string;
     patient?: IPatient;
     instructions: string;
-    followUpDate?: string | null;
+    followupDate?: string | null;
+    followUpDate?: string;
     createdAt: string;
     updatedAt: string;
 }

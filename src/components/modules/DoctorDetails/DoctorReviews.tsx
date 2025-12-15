@@ -24,7 +24,7 @@ interface DoctorReviewsProps {
 }
 
 export default function DoctorReviews({ doctorId }: DoctorReviewsProps) {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ averageRating: 0, totalReviews: 0 });
 
@@ -108,7 +108,7 @@ export default function DoctorReviews({ doctorId }: DoctorReviewsProps) {
           </p>
         ) : (
           <div className="space-y-4">
-            {reviews?.data?.map((review) => (
+            {reviews?.data?.map((review:any) => (
               <div
                 key={review.id}
                 className="border-b last:border-0 pb-4 last:pb-0"
