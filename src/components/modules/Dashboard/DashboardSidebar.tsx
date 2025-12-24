@@ -6,7 +6,7 @@ import { UserRole } from "@/utility/auth";
 
 async function DashboardSidebar() {
   const userInfo = await getUser();
-  const navItems: NavSection[] = getNavItemsByRole((userInfo?.role as UserRole) || []);
+  const navItems: NavSection[] = await getNavItemsByRole((userInfo?.role as UserRole) || []);
 
   const info: IUser = {
     name: userInfo?.roleData?.name,

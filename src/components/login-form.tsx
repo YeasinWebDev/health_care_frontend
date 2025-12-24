@@ -34,7 +34,7 @@ const LoginForm = ({redirect}:{redirect?:string}) => {
     toast.error(state?.message);
   }
 
-  console.log(state?.data?.user)
+  // console.log(state?.data?.user)
 
   return (
     <form action={formAction}>
@@ -81,7 +81,7 @@ const LoginForm = ({redirect}:{redirect?:string}) => {
             </FieldDescription>
             <FieldDescription className="px-6 text-center">
               <Link
-                href="/forget-password"
+                href="/forgot-password"
                 className="text-blue-600 hover:underline font-semibold"
               >
                 Forgot password?

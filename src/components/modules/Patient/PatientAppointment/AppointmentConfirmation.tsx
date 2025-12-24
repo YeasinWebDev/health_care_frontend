@@ -2,20 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { createAppointment } from "@/services/patient/appointment.service";
+import { createAppointment, createAppointmentWithPayLater } from "@/services/patient/appointment.service";
 import { IDoctor } from "@/types/doctor.interface";
 import { ISchedule } from "@/types/schedule.interface";
 import { format } from "date-fns";
-import {
-  Calendar,
-  CheckCircle2,
-  Clock,
-  Loader2,
-  MapPin,
-  Phone,
-  Stethoscope,
-  User,
-} from "lucide-react";
+import { Calendar, CheckCircle2, Clock, CreditCard, Loader2, MapPin, Phone, Stethoscope, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -25,16 +16,15 @@ interface AppointmentConfirmationProps {
   schedule: ISchedule;
 }
 
-const AppointmentConfirmation = ({
-  doctor,
-  schedule,
-}: AppointmentConfirmationProps) => {
+const AppointmentConfirmation = ({ doctor, schedule }: AppointmentConfirmationProps) => {
   const router = useRouter();
+  const [isPayingNow, setIsPayingNow] = useState(false);
+  const [isPayingLater, setIsPayingLater] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
   const handleConfirmBooking = async () => {
-    setIsBooking(true);
+    setIsPayingNow(true);
 
     try {
       const result = await createAppointment({
@@ -42,7 +32,11 @@ const AppointmentConfirmation = ({
         scheduleId: schedule.id,
       });
 
-      if (result.success) {
+      if (result.success && result.data?.paymentUrl) {
+        toast.success("Redirecting to payment...");
+        // Redirect to Stripe checkout
+        window.location.replace(result.data.paymentUrl);
+      } else if (result.success) {
         setBookingSuccess(true);
         toast.success("Appointment booked successfully!");
 
@@ -52,11 +46,39 @@ const AppointmentConfirmation = ({
         }, 2000);
       } else {
         toast.error(result.message || "Failed to book appointment");
-        setIsBooking(false);
+        setIsPayingNow(false);
       }
     } catch (error) {
       toast.error("An error occurred while booking the appointment");
-      setIsBooking(false);
+      setIsPayingNow(false);
+      console.error(error);
+    }
+  };
+
+  const handlePayLater = async () => {
+    setIsPayingLater(true);
+
+    try {
+      const result = await createAppointmentWithPayLater({
+        doctorId: doctor.id!,
+        scheduleId: schedule.id,
+      });
+
+      if (result.success) {
+        setBookingSuccess(true);
+        toast.success("Appointment booked! You can pay later from your appointments page.");
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          router.push("/dashboard/my-appointments");
+        }, 2000);
+      } else {
+        toast.error(result.message || "Failed to book appointment");
+        setIsPayingLater(false);
+      }
+    } catch (error) {
+      toast.error("An error occurred while booking the appointment");
+      setIsPayingLater(false);
       console.error(error);
     }
   };
@@ -71,16 +93,10 @@ const AppointmentConfirmation = ({
                 <CheckCircle2 className="h-16 w-16 text-green-600" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-green-900">
-                  Appointment Confirmed!
-                </h2>
-                <p className="text-green-700 mt-2">
-                  Your appointment has been successfully booked
-                </p>
+                <h2 className="text-2xl font-bold text-green-900">Appointment Confirmed!</h2>
+                <p className="text-green-700 mt-2">Your appointment has been successfully booked</p>
               </div>
-              <p className="text-sm text-green-600">
-                Redirecting to your appointments...
-              </p>
+              <p className="text-sm text-green-600">Redirecting to your appointments...</p>
             </div>
           </CardContent>
         </Card>
@@ -92,12 +108,8 @@ const AppointmentConfirmation = ({
     <div className="max-w-4xl mx-auto space-y-3">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Confirm Appointment
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          Review the details below and confirm your appointment
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">Confirm Appointment</h1>
+        <p className="text-muted-foreground mt-2">Review the details below and confirm your appointment</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -117,59 +129,43 @@ const AppointmentConfirmation = ({
 
             <Separator />
 
-            {doctor.doctorSpecialties &&
-              doctor.doctorSpecialties.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Stethoscope className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Specialties</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {doctor.doctorSpecialties.map((ds, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md border border-blue-200"
-                      >
-                        {ds.specialities?.title || "N/A"}
-                      </span>
-                    ))}
-                  </div>
+            {doctor.doctorSpecialties && doctor.doctorSpecialties.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Stethoscope className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Specialties</span>
                 </div>
-              )}
+                <div className="flex flex-wrap gap-2">
+                  {doctor.doctorSpecialties.map((ds, idx) => (
+                    <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md border border-blue-200">
+                      {ds.specialities?.title || "N/A"}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <Separator />
 
             <div className="space-y-2">
               {doctor.qualification && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Qualification:
-                  </span>
-                  <span className="text-sm font-medium">
-                    {doctor.qualification}
-                  </span>
+                  <span className="text-sm text-muted-foreground">Qualification:</span>
+                  <span className="text-sm font-medium">{doctor.qualification}</span>
                 </div>
               )}
 
               {doctor.experience !== undefined && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Experience:
-                  </span>
-                  <span className="text-sm font-medium">
-                    {doctor.experience} years
-                  </span>
+                  <span className="text-sm text-muted-foreground">Experience:</span>
+                  <span className="text-sm font-medium">{doctor.experience} years</span>
                 </div>
               )}
 
               {doctor.currentWorkPlace && (
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Working at:
-                  </span>
-                  <span className="text-sm font-medium">
-                    {doctor.currentWorkPlace}
-                  </span>
+                  <span className="text-sm text-muted-foreground">Working at:</span>
+                  <span className="text-sm font-medium">{doctor.currentWorkPlace}</span>
                 </div>
               )}
             </div>
@@ -196,12 +192,8 @@ const AppointmentConfirmation = ({
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-blue-900">
-                  Consultation Fee
-                </span>
-                <span className="text-xl font-bold text-blue-600">
-                  {doctor.appointmentFee} bdt
-                </span>
+                <span className="text-sm font-medium text-blue-900">Consultation Fee</span>
+                <span className="text-xl font-bold text-blue-600">{doctor.appointmentFee} bdt</span>
               </div>
             </div>
           </CardContent>
@@ -219,12 +211,8 @@ const AppointmentConfirmation = ({
             <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 space-y-4">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Date</p>
-                <p className="text-2xl font-bold text-blue-900">
-                  {format(new Date(schedule.startDateTime), "EEEE")}
-                </p>
-                <p className="text-lg text-blue-700">
-                  {format(new Date(schedule.startDateTime), "MMMM d, yyyy")}
-                </p>
+                <p className="text-2xl font-bold text-blue-900">{format(new Date(schedule.startDateTime), "EEEE")}</p>
+                <p className="text-lg text-blue-700">{format(new Date(schedule.startDateTime), "MMMM d, yyyy")}</p>
               </div>
 
               <Separator />
@@ -234,8 +222,7 @@ const AppointmentConfirmation = ({
                 <div>
                   <p className="text-sm text-muted-foreground">Time</p>
                   <p className="text-lg font-semibold text-blue-900">
-                    {format(new Date(schedule.startDateTime), "h:mm a")} -{" "}
-                    {format(new Date(schedule.endDateTime), "h:mm a")}
+                    {format(new Date(schedule.startDateTime), "h:mm a")} - {format(new Date(schedule.endDateTime), "h:mm a")}
                   </p>
                 </div>
               </div>
@@ -246,34 +233,26 @@ const AppointmentConfirmation = ({
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-0.5">•</span>
-                  <span>
-                    Please arrive 10 minutes before your scheduled time
-                  </span>
+                  <span>Please arrive 10 minutes before your scheduled time</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-0.5">•</span>
-                  <span>
-                    Bring any relevant medical records or prescriptions
-                  </span>
+                  <span>Bring any relevant medical records or prescriptions</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-0.5">•</span>
-                  <span>
-                    You can cancel or reschedule from your appointments page
-                  </span>
+                  <span>You can cancel or reschedule from your appointments page</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 mt-0.5">•</span>
-                  <span>
-                    A confirmation will be sent to your registered email
-                  </span>
+                  <span>A confirmation will be sent to your registered email</span>
                 </li>
               </ul>
             </div>
 
             <Separator />
 
-            <div className="space-y-3 pt-2">
+            {/* <div className="space-y-3 pt-2">
               <Button
                 onClick={handleConfirmBooking}
                 disabled={isBooking}
@@ -299,6 +278,39 @@ const AppointmentConfirmation = ({
                 disabled={isBooking}
                 className="w-full cursor-pointer"
               >
+                Go Back
+              </Button>
+            </div> */}
+            <div className="space-y-3 pt-2">
+              <Button onClick={handleConfirmBooking} disabled={isBooking} className="w-full" size="lg">
+                {isPayingNow ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing Payment...
+                  </>
+                ) : (
+                  <>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Pay Now & Book Appointment
+                  </>
+                )}
+              </Button>
+
+              <Button onClick={handlePayLater} disabled={isBooking} variant="outline" className="w-full" size="lg">
+                {isPayingLater ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Booking Appointment...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="mr-2 h-4 w-4" />
+                    Book Now, Pay Later
+                  </>
+                )}
+              </Button>
+
+              <Button variant="ghost" onClick={() => router.back()} disabled={isBooking} className="w-full">
                 Go Back
               </Button>
             </div>

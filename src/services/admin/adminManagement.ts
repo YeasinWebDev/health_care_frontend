@@ -3,6 +3,7 @@
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
 import { createAdminZodSchema, updateAdminZodSchema } from "@/zod/admin.validation";
+import { revalidateTag } from "next/cache";
 
 export async function createAdmin(_prevState: any, formData: FormData) {
   try {
@@ -35,6 +36,13 @@ export async function createAdmin(_prevState: any, formData: FormData) {
       body: newFormData,
     });
     const result = await response.json();
+
+    if (result.success) {
+      revalidateTag("admins-list", { expire: 0 });
+      revalidateTag("admins-page-1", { expire: 0 });
+      revalidateTag("admin-dashboard-meta", { expire: 0 });
+    }
+
     return result;
   } catch (error: any) {
     console.log(error);
@@ -44,7 +52,17 @@ export async function createAdmin(_prevState: any, formData: FormData) {
 
 export async function getAdmins(queryString?: string) {
   try {
-    const response = await serverFetch.get(`/user?role=ADMIN${queryString ? `&${queryString}` : ""}`);
+    const searchParams = new URLSearchParams(queryString);
+    const page = searchParams.get("page") || "1";
+    const searchTerm = searchParams.get("searchTerm") || "all";
+
+    const response = await serverFetch.get(`/user?role=ADMIN${queryString ? `&${queryString}` : ""}`, {
+      next: {
+        tags: ["admins-list", `admins-page-${page}`, `admins-search-${searchTerm}`],
+        revalidate: 180,
+      },
+    });
+
     const result = await response.json();
     return result;
   } catch (error: any) {
@@ -55,7 +73,12 @@ export async function getAdmins(queryString?: string) {
 
 export async function getAdmin(id: string) {
   try {
-    const response = await serverFetch.get(`/user/${id}`);
+    const response = await serverFetch.get(`/user/${id}`, {
+      next: {
+        tags: [`admin-${id}`, "admins-list"],
+        revalidate: 180, // more responsive admin profile updates
+      },
+    });
     const result = await response.json();
     return result;
   } catch (error: any) {
@@ -64,7 +87,7 @@ export async function getAdmin(id: string) {
   }
 }
 
-export async function updateAdmin(id: string,_prevState: any, formData: FormData) {
+export async function updateAdmin(id: string, _prevState: any, formData: FormData) {
   try {
     const payload = {
       name: formData.get("name") as string,
@@ -90,6 +113,13 @@ export async function updateAdmin(id: string,_prevState: any, formData: FormData
       body: JSON.stringify(validatedPayload),
     });
     const result = await response.json();
+
+    if (result.success) {
+      revalidateTag("admins-list", { expire: 0 });
+      revalidateTag("admins-page-1", { expire: 0 });
+      revalidateTag("admin-dashboard-meta", { expire: 0 });
+    }
+
     return result;
   } catch (error: any) {
     console.log(error);
@@ -101,10 +131,16 @@ export async function deleteAdmin(id: string) {
   try {
     const response = await serverFetch.delete(`/user/${id}`);
     const result = await response.json();
+    
+    if (result.success) {
+      revalidateTag("admins-list", { expire: 0 });
+      revalidateTag("admins-page-1", { expire: 0 });
+      revalidateTag("admin-dashboard-meta", { expire: 0 });
+    }
+
     return result;
   } catch (error: any) {
     console.log(error);
     return { success: false, message: `${process.env.NODE_ENV === "development" ? error.message : "Something went wrong"}` };
   }
-    
 }

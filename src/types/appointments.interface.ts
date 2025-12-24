@@ -32,7 +32,20 @@ export interface IAppointment {
     updatedAt: string;
     prescription?: IPrescription;
     Review?: IReview;
-    // payment?: IPayment;
+    payment?: IPayment;
+}
+
+export interface IPayment {
+    id: string;
+    appointmentId: string;
+    amount: number;
+    transactionId: string;
+    status: PaymentStatus;
+    paymentGatewayData?: any;
+    stripeEventId?: string;
+
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IAppointmentFormData {

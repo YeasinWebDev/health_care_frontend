@@ -8,7 +8,6 @@ import { getDoctors } from "@/services/admin/doctorManagement";
 import { getSpecialities } from "@/services/admin/specialitiesManagement";
 import { Suspense } from "react";
 
-// ISR: Revalidate every 10 minutes for doctor listings
 export const revalidate = 600;
 
 const ConsultationPage = async ({
@@ -27,8 +26,6 @@ const ConsultationPage = async ({
 
   const doctors = doctorsResponse?.data?.data || [];
   const specialties = specialtiesResponse?.data || [];
-
-  console.log(doctors)
 
   return (
     <div className="container mx-auto px-4 py-8">

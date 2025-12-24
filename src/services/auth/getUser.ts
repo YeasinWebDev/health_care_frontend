@@ -15,10 +15,10 @@ export const getUser = async (): Promise<UserInfo | undefined> => {
       headers: {
         authorization: `${accessToken?.value}`,
       },
-      cache:"force-cache",
-      next:{
-        tags:["user"]
-      }
+      next: {
+        tags: ["user"],
+        revalidate: 180,
+      },
     });
 
     const data = await user.json();

@@ -19,7 +19,7 @@ const UserDropdown = (userInfo: { userInfo: IUser | undefined }) => {
   useEffect(() => {
     if (userInfo?.userInfo) {
       setUser({
-        name: userInfo?.userInfo.name,
+        name: userInfo?.userInfo?.roleData?.name,
         email: userInfo?.userInfo.email,
         role: userInfo?.userInfo.role,
       });
@@ -33,7 +33,7 @@ const UserDropdown = (userInfo: { userInfo: IUser | undefined }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <span className="text-sm font-semibold">{user.name.charAt(0).toUpperCase() || "U"}</span>
+          <span className="text-sm font-semibold">{user.name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || "U"}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

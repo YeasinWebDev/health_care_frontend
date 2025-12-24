@@ -133,7 +133,6 @@ export default function BookAppointmentDialog({
 
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         {dateSchedules.map((schedule) => {
-                          console.log(schedule);
                           const startTime = schedule.schedule?.startDateTime
                             ? new Date(schedule.schedule.startDateTime)
                             : null;

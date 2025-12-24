@@ -44,7 +44,7 @@ function DashboardSidebarContent({ userInfo, navItems }: DashboardSidebarContent
 
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-6">
-          {navItems.map((section, sectionIdx) => (
+          {navItems?.map((section, sectionIdx) => (
             <div key={sectionIdx}>
               {section.title && <h4 className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{section.title}</h4>}
               <div className="space-y-1">

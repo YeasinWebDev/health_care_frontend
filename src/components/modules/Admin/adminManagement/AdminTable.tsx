@@ -41,7 +41,7 @@ function AdminTable({ admins }: IAdminTableProps) {
     if (result.success) {
       toast.success(result.message || "Admin deleted successfully");
       setDeletingAdmin(null);
-      handleRefresh();
+      router.refresh();
     } else {
       toast.error(result.message || "Failed to delete admin");
     }

@@ -8,12 +8,13 @@ import { getIconComponentByIconName } from "@/lib/iconMapper";
 // import { getIconComponent } from "@/lib/icon-mapper";
 import { cn } from "@/lib/utils";
 import { IUser, NavSection } from "@/types/dashboard.interface";
+import { UserInfo } from "@/types/user.interface";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface DashboardMobileSidebarContentProps {
-  userInfo: { userInfo: IUser | undefined } ;
+  userInfo: { userInfo: UserInfo | undefined }; 
   navItems: NavSection[];
   dashboardHome: string;
 }
@@ -53,7 +54,7 @@ const DashboardMobileSidebar = ({
       {/* Navigation */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-6">
-          {navItems.map((section, sectionIdx) => (
+          {navItems?.map((section, sectionIdx) => (
             <div key={sectionIdx}>
               {section.title && (
                 <h4 className="mb-2 px-3 text-xs font-semibold text-muted-foreground uppercase">
