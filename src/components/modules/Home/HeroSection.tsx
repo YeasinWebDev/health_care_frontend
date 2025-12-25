@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar1, Search, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -32,17 +33,21 @@ export default function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4" role="group" aria-label="Hero actions">
-            <Button className="bg-blue-600 hover:bg-primary text-white rounded-xl px-6 py-5 hover:scale-105 duration-300 transition-all" aria-label="Find your doctor with AI">
-              <Search aria-hidden="true" /> Find Your Doctor
-            </Button>
+            <Link href="/consultation">
+              <Button className="bg-blue-600 hover:bg-primary text-white rounded-xl px-6 py-5 hover:scale-105 duration-300 transition-all" aria-label="Find your doctor with AI">
+                <Search aria-hidden="true" /> Find Your Doctor
+              </Button>
+            </Link>
 
-            <Button
-              variant="outline"
-              className="rounded-xl px-6 py-5 border-primary text-primary hover:text-primary hover:scale-105 duration-300 transition-all"
-              aria-label="Book appointment with a doctor"
-            >
-              <Calendar1 aria-hidden="true" /> Book Appointment
-            </Button>
+            <Link href="/consultation">
+              <Button
+                variant="outline"
+                className="rounded-xl px-6 py-5 border-primary text-primary hover:text-primary hover:scale-105 duration-300 transition-all"
+                aria-label="Book appointment with a doctor"
+              >
+                <Calendar1 aria-hidden="true" /> Book Appointment
+              </Button>
+            </Link>
           </div>
 
           {/* Stats */}
@@ -83,7 +88,11 @@ export default function HeroSection() {
                 </p>
               </div>
 
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg mt-4 hover:scale-105 duration-300 transition-all" aria-label="Get AI recommendations">
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-lg mt-4 hover:scale-105 duration-300 transition-all"
+                aria-label="Get AI recommendations"
+              >
                 Get AI Recommendations
               </Button>
             </form>

@@ -118,7 +118,7 @@ export default function AISearchDialog({ initialSymptoms = "", externalOpen, onO
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="gap-2">
           <Sparkles className="h-4 w-4" />
-          <span className="hidden sm:inline">AI Search</span>
+          <span className="hidden lg:inline">AI Search</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,7 @@ function doctorFormDialog({ open, onClose, onSuccess, doctor, specialities }: ID
   const [gender, setGender] = useState<"MALE" | "FEMALE">(doctor?.gender || "MALE");
 
   const [state, formAction, pending] = useActionState(isEdit ? updateDoctor.bind(null, doctor.id!) : createDoctor, null);
+  const prevStateRef = useRef(state);
 
   const specialitySelection = useSpecialitySelection({
     doctor,
@@ -48,6 +49,8 @@ function doctorFormDialog({ open, onClose, onSuccess, doctor, specialities }: ID
   };
 
   useEffect(() => {
+    if (prevStateRef.current === state) return;
+    prevStateRef.current = state;
     if (state?.success) {
       toast.success(state.message);
       onSuccess();
