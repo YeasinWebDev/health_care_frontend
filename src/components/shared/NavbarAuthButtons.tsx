@@ -32,7 +32,7 @@ export default function NavbarAuthButtons({
         <Link href={dashboardRoute}>
           <Button variant="outline" className="gap-2">
             <LayoutDashboard className="h-4 w-4" />
-            Dashboard
+            <span className="hidden lg:flex">Dashboard</span>
           </Button>
         </Link>
         <UserDropdown userInfo={userInfo} />

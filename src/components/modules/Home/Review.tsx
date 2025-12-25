@@ -22,7 +22,7 @@ function Review() {
     {
       name: "Robert Thompson",
       role: "Chronic Back Pain Patient",
-      text: "I was struggling to find the right specialist for years. PH Health Care's AI matched me with Dr. Wilson in minutes. Life-changing experience!",
+      text: "I was struggling to find the right specialist for years. CareBridge's AI matched me with Dr. Wilson in minutes. Life-changing experience!",
       image: docImg,
       rating: 4.5,
     },
@@ -54,7 +54,7 @@ function Review() {
           id="reviews-heading"
           className="text-4xl font-bold text-gray-900 leading-snug"
         >
-          What Our Patients Say About PH Health Care
+          What Our Patients Say About CareBridge
         </h2>
         <p className="text-gray-600 max-w-2xl mt-3 text-base">
           Read genuine patient reviews and testimonials about their experience

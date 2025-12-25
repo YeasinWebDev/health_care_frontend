@@ -41,12 +41,12 @@ const MobileMenu = ({
                 {link.label}
               </Link>
             ))}
-            <div className="border-t pt-4 flex flex-col space-y-4">
+            <div className="border-t pt-4 flex gap-2">
               <div className="flex justify-center w-full">
                 <AISearchDialog />
               </div>
               {hasAccessToken && userInfo ? (
-                <>
+                <div className="flex items-center gap-2">
                   <Link
                     href={dashboardRoute || "/"}
                     className="text-lg font-medium"
@@ -59,7 +59,7 @@ const MobileMenu = ({
                   <div className="flex justify-center">
                     <UserDropdown userInfo={userInfo} />
                   </div>
-                </>
+                </div>
               ) : (
                 <Link href="/login" className="text-lg font-medium">
                   <Button className="w-full">Login</Button>
