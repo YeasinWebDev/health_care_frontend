@@ -5,6 +5,7 @@ import Link from "next/link";
 import AISearchDialog from "./AiSearchDialog";
 import NavbarAuthButtons from "./NavbarAuthButtons";
 import MobileMenu from "./MobileMenu";
+import DashboardNavLinks from "./DashboardNavLinks";
 
 const CommonNavbar = async () => {
   const navItems = [
@@ -30,12 +31,8 @@ const CommonNavbar = async () => {
           <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">CareBridge</h2>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          {navItems?.map((link) => (
-            <Link key={link.label} href={link.href} prefetch={true} className="text-white">
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
+          <DashboardNavLinks navItems={navItems}/>
         </nav>
 
         <div className="hidden md:flex items-center space-x-2">

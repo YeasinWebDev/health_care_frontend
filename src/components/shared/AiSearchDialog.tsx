@@ -18,9 +18,10 @@ interface AISearchDialogProps {
   externalOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   onSearchComplete?: () => void;
+  title?: string;
 }
 
-export default function AISearchDialog({ initialSymptoms = "", externalOpen, onOpenChange, onSearchComplete }: AISearchDialogProps = {}) {
+export default function AISearchDialog({ initialSymptoms = "", externalOpen, onOpenChange, onSearchComplete, title }: AISearchDialogProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [symptoms, setSymptoms] = useState(initialSymptoms);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,10 +117,14 @@ export default function AISearchDialog({ initialSymptoms = "", externalOpen, onO
   return (
     <Dialog open={open} onOpenChange={handleDialogOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+       {!title ? <Button variant="outline" size="sm" className="gap-2 cursor-pointer">
           <Sparkles className="h-4 w-4" />
           <span className="block md:hidden lg:inline">AI Search</span>
-        </Button>
+        </Button>:
+        <Button className="w-fit shadow-md cursor-pointer" size="lg">
+          <Sparkles className="mr-2 h-4 w-4" />
+          Get AI Recommendations
+        </Button>}
       </DialogTrigger>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
@@ -187,8 +192,8 @@ export default function AISearchDialog({ initialSymptoms = "", externalOpen, onO
 
               <div className="space-y-3 max-h-[400px] overflow-y-auto">
                 {suggestedDoctors?.map((doctor, index) => (
-                  <div key={doctor.id || index} className="p-4 bg-white rounded-lg border border-primary/20 hover:shadow-md transition-shadow">
-                    <div className="flex items-start gap-4">
+                  <div key={doctor.id || index} className="p-2 md:p-4 bg-white rounded-lg border border-primary/20 hover:shadow-md transition-shadow">
+                    <div className="flex items-start gap-2 md:gap-4">
                       <div className="shrink-0">
                         <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold">{index + 1}</div>
                       </div>
@@ -266,7 +271,7 @@ export default function AISearchDialog({ initialSymptoms = "", externalOpen, onO
                           <Link href={`/consultation/doctor/${doctor.id}`} onClick={handleDoctorClick}>
                             <Button size="sm">
                               <User className="h-3 w-3 mr-1" />
-                              View Profile
+                              <span className="hidden md:flex">View Profile</span>
                             </Button>
                           </Link>
                         </div>

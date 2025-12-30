@@ -2,13 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,18 +12,14 @@ interface DoctorSearchFiltersProps {
   specialties: Array<{ id: string; title: string }>;
 }
 
-export default function DoctorSearchFilters({
-  specialties,
-}: DoctorSearchFiltersProps) {
+export default function DoctorSearchFilters({ specialties }: DoctorSearchFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   // Initialize state once from URL, but don't re-sync on every searchParams change
   const [searchTerm, setSearchTerm] = useState(() => {
     if (typeof window !== "undefined") {
-      return (
-        new URLSearchParams(window.location.search).get("searchTerm") || ""
-      );
+      return new URLSearchParams(window.location.search).get("searchTerm") || "";
     }
     return "";
   });
@@ -56,8 +46,7 @@ export default function DoctorSearchFilters({
 
   // Trigger search when debounced value changes
   useEffect(() => {
-    const urlSearchTerm =
-      new URLSearchParams(window.location.search).get("searchTerm") || "";
+    const urlSearchTerm = new URLSearchParams(window.location.search).get("searchTerm") || "";
     if (debouncedSearch !== urlSearchTerm) {
       updateFilters("searchTerm", debouncedSearch);
     }
@@ -69,8 +58,7 @@ export default function DoctorSearchFilters({
     router.push("/consultation");
   };
 
-  const hasActiveFilters =
-    searchParams.get("searchTerm") || searchParams.get("specialties");
+  const hasActiveFilters = searchParams.get("searchTerm") || searchParams.get("specialties");
 
   return (
     <div className="space-y-4">
@@ -78,58 +66,45 @@ export default function DoctorSearchFilters({
         {/* Search Input */}
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search doctors by name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+          <Input placeholder="Search doctors by name..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
         </div>
 
-        {/* Specialty Filter */}
-        <Select
-          value={searchParams.get("specialties") || "all"}
-          onValueChange={(value) => updateFilters("specialties", value)}
-        >
-          <SelectTrigger className="w-full md:w-[250px]">
-            <SelectValue placeholder="Select Specialty" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Specialties</SelectItem>
-            {specialties.map((specialty) => (
-              <SelectItem key={specialty.id} value={specialty.title}>
-                {specialty.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* <div className="flex items-center gap-5"> */}
+          {/* Specialty Filter */}
+          <Select value={searchParams.get("specialties") || "all"} onValueChange={(value) => updateFilters("specialties", value)}>
+            <SelectTrigger className="w-full md:w-[250px]">
+              <SelectValue placeholder="Select Specialty" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Specialties</SelectItem>
+              {specialties.map((specialty) => (
+                <SelectItem key={specialty.id} value={specialty.title}>
+                  {specialty.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        {/* Gender Filter */}
-        <Select
-          value={searchParams.get("gender") || "all"}
-          onValueChange={(value) => updateFilters("gender", value)}
-        >
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Gender" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Genders</SelectItem>
-            <SelectItem value="MALE">Male</SelectItem>
-            <SelectItem value="FEMALE">Female</SelectItem>
-          </SelectContent>
-        </Select>
+          {/* Gender Filter */}
+          <Select value={searchParams.get("gender") || "all"} onValueChange={(value) => updateFilters("gender", value)}>
+            <SelectTrigger className="w-full md:w-[180px]">
+              <SelectValue placeholder="Gender" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Genders</SelectItem>
+              <SelectItem value="MALE">Male</SelectItem>
+              <SelectItem value="FEMALE">Female</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Clear Filters */}
         {hasActiveFilters && (
-          <Button
-            variant="outline"
-            onClick={handleClearFilters}
-            className="w-full md:w-auto"
-          >
+          <Button variant="outline" onClick={handleClearFilters} className="w-full md:w-auto">
             Clear Filters
           </Button>
         )}
-      </div>
+      {/* </div> */}
     </div>
   );
 }
