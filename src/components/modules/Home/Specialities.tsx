@@ -78,8 +78,8 @@ const specialists = [
 
 const Specialities = () => {
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-blue-50/30" aria-labelledby="specialists-heading">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <section className="py-14 bg-gradient-to-b from-white to-blue-50/30 w-full" aria-labelledby="specialists-heading">
+      <div className="mx-auto px-4 max-w-[1500px]">
         {/* Section Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 px-4 py-2 rounded-full mb-6 border border-blue-100">
@@ -97,7 +97,7 @@ const Specialities = () => {
         </div>
 
         {/* Specialists Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 xl:gap-6 mb-12">
           {specialists.slice(0, 4).map((specialist) => {
             const Icon = specialist.icon;
             return (
@@ -153,16 +153,8 @@ const Specialities = () => {
         </div>
 
         {/* View All Button */}
-        <div className="text-center">
-          {/* <Link 
-            href="/specialists" 
-            className="group inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-8 py-4 rounded-xl hover:shadow-xl transition-all duration-300 hover:scale-105"
-          >
-            <span>View All Specialties</span>
-            <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" aria-hidden="true" />
-          </Link> */}
-          
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-600">
+        <div>
+          <div className="flex flex-col sm:flex-row md:items-center justify-center gap-5 md:gap-8 text-gray-600">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                 <Shield size={20} className="text-green-600" aria-hidden="true" />

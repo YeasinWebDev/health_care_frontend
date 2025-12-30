@@ -20,10 +20,7 @@ export default function DoctorCard({ doctor }: DoctorCard) {
 
   return (
     <>
-      <Card className="group relative overflow-hidden border border-gray-200/80 hover:border-blue-300 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-b from-white to-gray-50/50 cursor-pointer">
-
-        {/* Background Glow Effect */}
-        {/* <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-indigo-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> */}
+      <Card className="group relative overflow-hidden border border-gray-200/80 hover:border-blue-300 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 bg-gradient-to-b from-white to-gray-50/50 cursor-pointer w-[22rem] lg:w-[20rem] xl:w-[21rem] 2xl:w-[22rem]">
 
         <CardHeader className="pb-4 relative">
           <div className="flex items-start gap-4">
@@ -41,25 +38,24 @@ export default function DoctorCard({ doctor }: DoctorCard) {
             <div className="flex-1 min-w-0 space-y-2">
               {/* Doctor Name & Title */}
               <div>
-                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors">Dr. {doctor.name}</CardTitle>
+                <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-blue-700 transition-colors truncate max-w-40">Dr. {doctor.name}</CardTitle>
                 <CardDescription className="text-gray-600 font-medium">{doctor.designation}</CardDescription>
               </div>
 
               {/* Rating & Badges */}
-              <div className="flex items-center flex-wrap gap-3">
+              <div className="flex items-center flex-row gap-2">
                 <div className="flex items-center gap-2 bg-gradient-to-r from-amber-50 to-yellow-50 px-3 py-1 rounded-full border border-amber-100">
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                     <span className="font-bold text-gray-900">{doctor.avgRating?.toFixed(1) || "N/A"}</span>
                   </div>
-                  <span className="text-xs text-gray-500">Rating</span>
                 </div>
 
                 {/* Verified Badge */}
-                <Badge variant="outline" className="border-green-200 bg-green-50 text-green-700">
-                  <CheckCircle size={12} className="mr-1" />
-                  Verified
-                </Badge>
+                <div className="border-green-200 bg-green-50 text-green-700 p-2 flex items-center gap-1 rounded-xl border">
+                  <CheckCircle size={14} className="mr-1" />
+                  <span className="text-xs font-medium">Verified</span>
+                </div>
               </div>
             </div>
           </div>
@@ -82,9 +78,9 @@ export default function DoctorCard({ doctor }: DoctorCard) {
             <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-3 rounded-xl border border-emerald-100">
               <div className="flex items-center gap-2">
                 {/* <DollarSign className="h-4 w-4 text-emerald-600" /> */}
-                <span className="text-xs font-medium text-emerald-700">Fee</span>
+                <span className="text-xs font-medium text-emerald-700">Fee (৳)</span>
               </div>
-              <p className="text-lg font-bold text-gray-900 mt-1">৳ {doctor.appointmentFee}</p>
+              <p className="text-lg font-bold text-gray-900 mt-1"> {doctor.appointmentFee}</p>
             </div>
 
             <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-3 rounded-xl border border-purple-100">

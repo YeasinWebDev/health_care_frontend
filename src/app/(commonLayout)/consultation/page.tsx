@@ -28,7 +28,7 @@ const ConsultationPage = async ({
   const specialties = specialtiesResponse?.data || [];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-[1500px] mx-auto py-8 px-5">
       <div className="space-y-6">
         {/* Header */}
         <div>

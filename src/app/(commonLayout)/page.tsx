@@ -7,7 +7,7 @@ import Head from "next/head";
 
 export default function Home() {
   return (
-    <>
+    <div className="w-full">
       <Head>
         <title>AI-Powered Healthcare - Find Your Perfect Doctor</title>
         <meta
@@ -17,13 +17,13 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="w-full overflow-hidden">
         <HeroSection />
         <Specialities />
         <TopRatedDoctors />
         <Steps />
         <Review />
       </main>
-    </>
+    </div>
   );
 }
