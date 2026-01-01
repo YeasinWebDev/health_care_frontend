@@ -116,7 +116,7 @@ const HealthPlansPage = () => {
             <h2 className="text-4xl font-bold mb-4 text-gray-900">
               Choose Your Perfect <span className="text-blue-600">Health Plan</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Select from our range of flexible plans. All include access to our premium healthcare network.</p>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">Select from our range of flexible plans. All include access to our premium healthcare network.</p>
           </div>
 
           {/* Pricing Cards */}
