@@ -6,6 +6,11 @@ import Link from "next/link";
 
 export const dynamic = "force-static";
 
+export const metadata = {
+  title: "CareBridge ||  Health Plans",
+  description: "Health plans for individuals and families",
+};
+
 const HealthPlansPage = () => {
   const plans = [
     {
@@ -89,14 +94,14 @@ const HealthPlansPage = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="container mx-auto px-4 -mt-20 relative  flex items-center justify-center gap-4">
+      <div className="container mx-auto px-4 -mt-20 relative flex items-center justify-center gap-4 flex-wrap">
         {[
           { value: "500+", label: "Expert Doctors" },
           { value: "24/7", label: "Support Available" },
           { value: "95%", label: "Patient Satisfaction" },
           { value: "50+", label: "Specialties" },
         ].map((stat, idx) => (
-          <div key={idx} className="bg-white shadow-xl border-gray-100 text-center h-fit p-3 w-[20rem] flex flex-col items-center justify-center rounded-md">
+          <div key={idx} className="bg-white shadow-xl border-gray-100 text-center h-fit p-3 w-[10rem] lg:w-[12rem] flex flex-col items-center justify-center rounded-md">
               <div className="text-3xl font-bold text-blue-600 mb-2">{stat.value}</div>
               <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
           </div>
@@ -115,7 +120,7 @@ const HealthPlansPage = () => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {plans.map((plan, index) => {
               const Icon = plan.icon;
               return (
