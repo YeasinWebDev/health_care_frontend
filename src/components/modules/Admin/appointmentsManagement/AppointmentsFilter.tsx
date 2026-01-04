@@ -40,10 +40,10 @@ const AppointmentsFilter = () => {
         />
 
         {/* Patient Email Filter */}
-        <SearchFilter paramName="patientEmail" placeholder="Patient Email" />
+        {/* <SearchFilter paramName="patientEmail" placeholder="Patient Email" /> */}
 
         {/* Doctor Email Filter */}
-        <SearchFilter paramName="doctorEmail" placeholder="Doctor Email" />
+        {/* <SearchFilter paramName="doctorEmail" placeholder="Doctor Email" /> */}
 
         {/* Clear Filters */}
         <ClearFiltersButton />
