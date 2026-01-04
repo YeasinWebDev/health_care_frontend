@@ -12,18 +12,19 @@ interface ManagementPageHeaderProps {
     onClick: () => void;
   };
   children?: React.ReactNode;
+  className?: string
 }
 
-function ManagementPageHeader({ title, description, action, children }: ManagementPageHeaderProps) {
+function ManagementPageHeader({ title, description, action, children , className}: ManagementPageHeaderProps) {
   const Icon = action?.icon || Plus;
   return (
-    <div className="flex items-center justify-between">
+    <div className={`flex items-center justify-between ${className}`}>
       <div>
         <h1 className="text-3xl font-bold">{title}</h1>
         {description && <p className="text-muted-foreground mt-1">{description}</p>}
       </div>
       {action && (
-        <Button onClick={action.onClick}>
+        <Button onClick={action.onClick} className="cursor-pointer">
           <Icon className="mr-2 h-4 w-4" />
           {action.label}
         </Button>

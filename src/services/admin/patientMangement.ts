@@ -84,3 +84,32 @@ export const deletePatient = async (id: string) => {
     return { success: false, message: `${process.env.NODE_ENV === "development" ? error.message : "Something went wrong"}` };
   }
 };
+
+export const getMyPatientData = async () => {
+  try {
+    const response = await serverFetch.get(`/patient/my-data`,{
+      cache: "no-cache",
+    });
+    const result = await response.json();
+    return result;
+  } catch (error: any) {
+    console.log(error);
+    return { success: false, message: `${process.env.NODE_ENV === "development" ? error.message : "Something went wrong"}` };
+  }
+};
+
+export const updateMyPatientData = async (formData:any) => {
+  try {
+    const response = await serverFetch.patch(`/patient`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const result = await response.json();
+    return result;
+  } catch (error: any) {
+    console.log(error);
+    return { success: false, message: `${process.env.NODE_ENV === "development" ? error.message : "Something went wrong"}` };
+  }
+};
