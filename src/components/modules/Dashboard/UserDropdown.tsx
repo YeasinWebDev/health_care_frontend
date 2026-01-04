@@ -32,7 +32,7 @@ const UserDropdown = (userInfo: { userInfo: IUser | undefined }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="rounded-full">
+        <Button variant="outline" size="icon" className="rounded-full z-40">
           <span className="text-sm font-semibold">{user.name?.charAt(0)?.toUpperCase() || user.email?.charAt(0)?.toUpperCase() || "U"}</span>
         </Button>
       </DropdownMenuTrigger>
