@@ -1,4 +1,3 @@
-// components/medical-profile-form.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -22,43 +21,20 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { updateMyPatientData } from "@/services/admin/patientMangement";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-
-const formSchema = z.object({
-  gender: z.enum(Object.values(Gender) as [Gender, ...Gender[]]),
-  dateOfBirth: z.date(),
-  bloodGroup: z.enum(Object.values(BloodGroup) as [BloodGroup, ...BloodGroup[]]),
-  maritalStatus: z.enum(Object.values(MaritalStatus) as [MaritalStatus, ...MaritalStatus[]]),
-
-  hasAllergies: z.boolean().default(false),
-  hasDiabetes: z.boolean().default(false),
-  smokingStatus: z.boolean().default(false),
-  hasPastSurgeries: z.boolean().default(false),
-  pregnancyStatus: z.boolean().default(false),
-
-  recentAnxiety: z.boolean().default(false),
-  recentDepression: z.boolean().default(false),
-
-  height: z.number().min(0.1).max(300),
-  width: z.number().min(0.1).max(500),
-
-  dietaryPreferences: z.string().default(""),
-  mentalHealthHistory: z.string().default(""),
-  immunizationStatus: z.string().default(""),
-});
+import { formSchema } from "@/zod/healthRecords.validation";
 
 interface MedicalProfileFormProps {
   isOpen?: boolean;
   onClose?: () => void;
   initialData?: MedicalProfile | null;
-  //   onSubmit: (data: MedicalProfile) => void;
-  isSubmitting?: boolean;
 }
 
-export function MedicalProfileForm({ initialData, isSubmitting = false, isOpen, onClose }: MedicalProfileFormProps) {
+export function MedicalProfileForm({ initialData, isOpen, onClose }: MedicalProfileFormProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFemale, setIsFemale] = useState(false);
   const router = useRouter();
 
-  const form = useForm<Partial<z.infer<typeof formSchema>>>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: initialData?.gender ?? Gender.MALE,
@@ -87,19 +63,26 @@ export function MedicalProfileForm({ initialData, isSubmitting = false, isOpen, 
   }, [genderValue]);
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    const data: MedicalProfile = {
-      ...values,
-      dateOfBirth: new Date(values.dateOfBirth),
-    };
-    // onSubmit(data);
-    let res = await updateMyPatientData({patientHealthData:data});
-    if(initialData){
-      toast.success("Profile updated successfully!");
-    }else{
-      toast.success("Profile created successfully!");
+    setIsSubmitting(true);
+    try {
+      const data: MedicalProfile = {
+        ...values,
+        dateOfBirth: new Date(values.dateOfBirth),
+      };
+    
+      await updateMyPatientData({ patientHealthData: data });
+      if (initialData) {
+        toast.success("Profile updated successfully!");
+      } else {
+        toast.success("Profile created successfully!");
+      }
+      onClose?.();
+      router.refresh();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }finally{
+      setIsSubmitting(false);
     }
-    onClose?.();
-    router.refresh();
   }
 
   return (
