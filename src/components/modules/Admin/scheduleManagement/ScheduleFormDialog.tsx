@@ -37,6 +37,7 @@ const ScheduleFormDialog = ({
       }
       onSuccess();
       onClose();
+      window.location.reload();
     } else if (state?.message && !state.success) {
       toast.error(state.message);
     }
