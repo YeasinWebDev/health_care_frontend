@@ -41,8 +41,8 @@ export default function NavbarAuthButtons({
   }
 
   return (
-    <Link href="/login">
-      <Button>Login</Button>
+    <Link href="/login" className="z-10">
+      <Button className="cursor-pointer">Login</Button>
     </Link>
   );
 }
