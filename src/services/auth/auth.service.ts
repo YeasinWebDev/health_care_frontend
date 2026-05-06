@@ -134,85 +134,85 @@ export async function resetPassword(_prevState: any, formData: FormData) {
   }
 }
 
-export async function getNewAccessToken() {
-  try {
-    const accessToken = await getCookie("accessToken");
-    const refreshToken = await getCookie("refreshToken");
+// export async function getNewAccessToken() {
+//   try {
+//     const accessToken = await getCookie("accessToken");
+//     const refreshToken = await getCookie("refreshToken");
 
-    //Case 1: Both tokens are missing - user is logged out
-    if (!accessToken && !refreshToken) {
-      return {
-        tokenRefreshed: false,
-      };
-    }
+//     //Case 1: Both tokens are missing - user is logged out
+//     if (!accessToken && !refreshToken) {
+//       return {
+//         tokenRefreshed: false,
+//       };
+//     }
 
-    // Case 2 : Access Token exist- and need to verify
-    if (accessToken) {
-      const verifiedToken = await verifyAccessToken(accessToken.value);
+//     // Case 2 : Access Token exist- and need to verify
+//     if (accessToken) {
+//       const verifiedToken = await verifyAccessToken(accessToken.value);
 
-      if (verifiedToken.success) {
-        return {
-          tokenRefreshed: false,
-        };
-      }
-    }
+//       if (verifiedToken.success) {
+//         return {
+//           tokenRefreshed: false,
+//         };
+//       }
+//     }
 
-    //Case 3 : refresh Token is missing- user is logged out
-    if (!refreshToken) {
-      return {
-        tokenRefreshed: false,
-      };
-    }
+//     //Case 3 : refresh Token is missing- user is logged out
+//     if (!refreshToken) {
+//       return {
+//         tokenRefreshed: false,
+//       };
+//     }
 
-    //Case 4: Access Token is invalid/expired- try to get a new one using refresh token
-    // This is the only case we need to call the API
+//     //Case 4: Access Token is invalid/expired- try to get a new one using refresh token
+//     // This is the only case we need to call the API
 
-    // Now we know: accessToken is invalid/missing AND refreshToken exists
-    // API Call - serverFetch will skip getNewAccessToken for /auth/refresh-token endpoint
-    const response = await serverFetch.post("/auth/refresh-token", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        refreshToken: refreshToken?.value,
-      }),
-    });
+//     // Now we know: accessToken is invalid/missing AND refreshToken exists
+//     // API Call - serverFetch will skip getNewAccessToken for /auth/refresh-token endpoint
+//     const response = await serverFetch.post("/auth/refresh-token", {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         refreshToken: refreshToken?.value,
+//       }),
+//     });
 
-    const result = await response.json();
+//     const result = await response.json();
 
-    if (!result.success) {
-      throw new Error(result.message || "Token refresh failed");
-    }
+//     if (!result.success) {
+//       throw new Error(result.message || "Token refresh failed");
+//     }
 
-    await removeCookie("accessToken");
-    await setCookie("accessToken", result.data.result.accessToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "none",
-    });
+//     await removeCookie("accessToken");
+//     await setCookie("accessToken", result.data.result.accessToken, {
+//       httpOnly: true,
+//       secure: true,
+//       maxAge: 24 * 60 * 60 * 1000,
+//       sameSite: "none",
+//     });
 
-    await removeCookie("refreshToken");
-    await setCookie("refreshToken", result.data.result.refreshToken, {
-      httpOnly: true,
-      secure: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
-    });
+//     await removeCookie("refreshToken");
+//     await setCookie("refreshToken", result.data.result.refreshToken, {
+//       httpOnly: true,
+//       secure: true,
+//       maxAge: 30 * 24 * 60 * 60 * 1000,
+//       sameSite: "none",
+//     });
 
-    return {
-      tokenRefreshed: true,
-      success: true,
-      message: "Token refreshed successfully",
-    };
-  } catch (error: any) {
-    return {
-      tokenRefreshed: false,
-      success: false,
-      message: error?.message || "Something went wrong",
-    };
-  }
-}
+//     return {
+//       tokenRefreshed: true,
+//       success: true,
+//       message: "Token refreshed successfully",
+//     };
+//   } catch (error: any) {
+//     return {
+//       tokenRefreshed: false,
+//       success: false,
+//       message: error?.message || "Something went wrong",
+//     };
+//   }
+// }
 
 export async function forgotPassword(_prevState: any, formData: FormData) {
   // Build validation payload

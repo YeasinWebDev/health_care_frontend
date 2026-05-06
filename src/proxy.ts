@@ -4,7 +4,7 @@ import Jwt from "jsonwebtoken";
 import { getDefaultDashboardRoute, getRouteOwner, isAuthRoute, UserRole } from "./utility/auth";
 import { removeCookie } from "./services/auth/tokenHandler";
 import { getUser } from "./services/auth/getUser";
-import { getNewAccessToken } from "./services/auth/auth.service";
+// import { getNewAccessToken } from "./services/auth/auth.service";
 import { verifyResetPasswordToken } from "./lib/jwthandler";
 
 export async function proxy(request: NextRequest) {
@@ -19,14 +19,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const tokenRefreshResult = await getNewAccessToken();
+  // const tokenRefreshResult = await getNewAccessToken();
 
-  // If token was refreshed, redirect to same page to fetch with new token
-  if (tokenRefreshResult?.tokenRefreshed) {
-    const url = request.nextUrl.clone();
-    url.searchParams.set("tokenRefreshed", "true");
-    return NextResponse.redirect(url);
-  }
+  // // If token was refreshed, redirect to same page to fetch with new token
+  // if (tokenRefreshResult?.tokenRefreshed) {
+  //   const url = request.nextUrl.clone();
+  //   url.searchParams.set("tokenRefreshed", "true");
+  //   return NextResponse.redirect(url);
+  // }
 
   const accessToken = request.cookies.get("accessToken")?.value;
 
