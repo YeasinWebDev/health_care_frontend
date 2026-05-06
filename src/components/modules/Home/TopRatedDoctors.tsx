@@ -2,9 +2,11 @@ import { getDoctors } from "@/services/admin/doctorManagement";
 import DoctorGrid from "../Consultation/DoctorGrid";
 import { Award, Star, ChevronRight } from "lucide-react";
 
+
+export const dynamic = "force-dynamic";
 async function TopRatedDoctors() {
   const allDoctors = await getDoctors();
-  const topRatedDoctors = allDoctors?.data?.data?.slice(0, 8) || []; // Limit to top 8
+  const topRatedDoctors = allDoctors?.data?.data?.slice(0, 4) || []; // Limit to top 8
 
   return (
     <section className="py-14 bg-gradient-to-b from-white to-blue-50/30">
